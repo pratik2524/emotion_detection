@@ -4,7 +4,7 @@ import yaml
 
 import os
 
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 # fetch the data from data/raw
 def fetch_data(train_path,test_path):
@@ -30,18 +30,18 @@ def fillna(train_df,test_df):
 
 
 
-def BOW(X_train,X_test,max_features,y_train,y_test):
+def tfidf(X_train,X_test,max_features,y_train,y_test):
 
-    vectorizer = CountVectorizer(max_features=max_features)
+    vectorizer = TfidfVectorizer(max_features=max_features)
 
-    X_train_bow = vectorizer.fit_transform(X_train)
+    X_train_tfidf = vectorizer.fit_transform(X_train)
 
-    X_test_bow = vectorizer.fit_transform(X_test)
+    X_test_tfidf = vectorizer.fit_transform(X_test)
 
-    df_train = pd.DataFrame(X_train_bow.toarray())
+    df_train = pd.DataFrame(X_train_tfidf.toarray())
     df_train['sentiment'] = y_train
 
-    df_test = pd.DataFrame(X_test_bow.toarray())
+    df_test = pd.DataFrame(X_test_tfidf.toarray())
     df_test['sentiment'] = y_test
 
     return df_train, df_test
@@ -49,8 +49,8 @@ def BOW(X_train,X_test,max_features,y_train,y_test):
 def save_data(data_path,df_train,df_test):
 
     os.makedirs(data_path, exist_ok=True)
-    df_train.to_csv(os.path.join(data_path,"train_bow.csv"))
-    df_test.to_csv(os.path.join(data_path,"test_bow.csv"))
+    df_train.to_csv(os.path.join(data_path,"train_tfidf.csv"))
+    df_test.to_csv(os.path.join(data_path,"test_tfidf.csv"))
 
 def main():
 
@@ -69,7 +69,7 @@ def main():
     X_test = test_df['content'].values
     y_test = test_df['sentiment'].values
 
-    df_train, df_test = BOW(X_train,X_test,max_features,y_train,y_test)
+    df_train, df_test = tfidf(X_train,X_test,max_features,y_train,y_test)
 
     data_path = os.path.join("data","processed")
 

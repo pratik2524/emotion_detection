@@ -11,7 +11,7 @@ n_estimators = yaml.safe_load(open('params.yaml','r'))['train_model']['n_estimat
 learning_rate = yaml.safe_load(open('params.yaml','r'))['train_model']['learning_rate']
 
 # fetch the data from data/raw
-train_df = pd.read_csv('./data/processed/train_bow.csv')
+train_df = pd.read_csv('./data/processed/train_tfidf.csv')
 #test_df = pd.read_csv('./data/features/test_bow.csv')
 
 X_train = train_df.iloc[:,0:-1].values
